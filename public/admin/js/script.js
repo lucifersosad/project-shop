@@ -1,12 +1,12 @@
 // Button Status
 const listButtonStatus = document.querySelectorAll("[button-status]");
-if(listButtonStatus.length > 0) {
+if (listButtonStatus.length > 0) {
   let url = new URL(window.location.href);
 
   listButtonStatus.forEach((button) => {
     button.addEventListener("click", () => {
       const status = button.getAttribute("button-status");
-      if(status) {
+      if (status) {
         url.searchParams.set("status", status);
       } else {
         url.searchParams.delete("status");
@@ -19,7 +19,7 @@ if(listButtonStatus.length > 0) {
 
 // Form Search
 const formSearch = document.querySelector("#form-search");
-if(formSearch) {
+if (formSearch) {
   let url = new URL(window.location.href);
 
   formSearch.addEventListener("submit", (event) => {
@@ -27,7 +27,7 @@ if(formSearch) {
 
     const keyword = event.target.elements.keyword.value;
 
-    if(keyword) {
+    if (keyword) {
       url.searchParams.set("keyword", keyword);
     } else {
       url.searchParams.delete("keyword");
@@ -39,10 +39,10 @@ if(formSearch) {
 
 // Button Pagination
 const listButtonPagination = document.querySelectorAll("[button-pagination]");
-if(listButtonPagination.length > 0) {
+if (listButtonPagination.length > 0) {
   let url = new URL(window.location.href);
 
-  listButtonPagination.forEach(button => {
+  listButtonPagination.forEach((button) => {
     button.addEventListener("click", () => {
       const page = button.getAttribute("button-pagination");
       url.searchParams.set("page", page);
@@ -53,11 +53,13 @@ if(listButtonPagination.length > 0) {
 // End Button Pagination
 
 // button-change-status
-const listButtonChangeStatus = document.querySelectorAll("[button-change-status]");
-if(listButtonChangeStatus.length > 0) {
+const listButtonChangeStatus = document.querySelectorAll(
+  "[button-change-status]"
+);
+if (listButtonChangeStatus.length > 0) {
   const formChangeStatus = document.querySelector("[form-change-status]");
 
-  listButtonChangeStatus.forEach(button => {
+  listButtonChangeStatus.forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.getAttribute("data-id");
       const status = button.getAttribute("data-status");
@@ -75,28 +77,30 @@ if(listButtonChangeStatus.length > 0) {
 
 // checkbox-multi
 const checkboxMulti = document.querySelector("[checkbox-multi]");
-if(checkboxMulti) {
+if (checkboxMulti) {
   const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
   const listInputId = checkboxMulti.querySelectorAll("input[name='id']");
 
   inputCheckAll.addEventListener("click", () => {
-    if(inputCheckAll.checked) {
-      listInputId.forEach(input => {
+    if (inputCheckAll.checked) {
+      listInputId.forEach((input) => {
         input.checked = true;
       });
     } else {
-      listInputId.forEach(input => {
+      listInputId.forEach((input) => {
         input.checked = false;
       });
     }
   });
 
-  listInputId.forEach(inputId => {
+  listInputId.forEach((inputId) => {
     inputId.addEventListener("click", () => {
-      const countInputIdChecked = checkboxMulti.querySelectorAll("input[name='id']:checked").length;
+      const countInputIdChecked = checkboxMulti.querySelectorAll(
+        "input[name='id']:checked"
+      ).length;
       const lengthInputId = listInputId.length;
-      
-      if(countInputIdChecked == lengthInputId) {
+
+      if (countInputIdChecked == lengthInputId) {
         inputCheckAll.checked = true;
       } else {
         inputCheckAll.checked = false;
@@ -108,21 +112,25 @@ if(checkboxMulti) {
 
 // form-change-multi
 const formChangeMulti = document.querySelector("[form-change-multi]");
-if(formChangeMulti) {
+if (formChangeMulti) {
   formChangeMulti.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const type = formChangeMulti.querySelector("select[name='type']").value;
-    
-    const listInputIdChecked = document.querySelectorAll("input[name='id']:checked");
-    if(listInputIdChecked.length > 0) {
+
+    const listInputIdChecked = document.querySelectorAll(
+      "input[name='id']:checked"
+    );
+    if (listInputIdChecked.length > 0) {
       const ids = [];
 
-      listInputIdChecked.forEach(input => {
+      listInputIdChecked.forEach((input) => {
         const id = input.value;
 
-        if(type == "change-position") {
-          const position = input.closest("tr").querySelector("input[name='position']").value;
+        if (type == "change-position") {
+          const position = input
+            .closest("tr")
+            .querySelector("input[name='position']").value;
           ids.push(`${id}-${position}`);
         } else {
           ids.push(id);
@@ -134,9 +142,9 @@ if(formChangeMulti) {
       const input = formChangeMulti.querySelector("input[name='ids']");
       input.value = stringIds;
 
-      if(type == "delete-all") {
+      if (type == "delete-all") {
         const isConfirm = confirm("Bạn có chắc muốn xóa những bản ghi này?");
-        if(!isConfirm) {
+        if (!isConfirm) {
           return;
         }
       }
@@ -151,21 +159,21 @@ if(formChangeMulti) {
 
 // button-delete
 const listButtonDelete = document.querySelectorAll("[button-delete]");
-if(listButtonDelete.length > 0) {
+if (listButtonDelete.length > 0) {
   const formDeleteItem = document.querySelector("[form-delete-item]");
 
-  listButtonDelete.forEach(button => {
+  listButtonDelete.forEach((button) => {
     button.addEventListener("click", () => {
       const isConfirm = confirm("Bạn có chắc muốn xóa?");
 
-      if(isConfirm) {
+      if (isConfirm) {
         const id = button.getAttribute("data-id");
         const path = formDeleteItem.getAttribute("data-path");
-  
+
         const action = `${path}/${id}?_method=DELETE`;
-  
+
         formDeleteItem.action = action;
-  
+
         formDeleteItem.submit();
       }
     });
@@ -175,7 +183,7 @@ if(listButtonDelete.length > 0) {
 
 // show-alert
 const showAlert = document.querySelector("[show-alert]");
-if(showAlert) {
+if (showAlert) {
   let time = showAlert.getAttribute("data-time");
   time = parseInt(time);
 
@@ -194,13 +202,15 @@ if(showAlert) {
 
 // upload-image
 const uploadImage = document.querySelector("[upload-image]");
-if(uploadImage) {
+if (uploadImage) {
   const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
-  const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
+  const uploadImagePreview = uploadImage.querySelector(
+    "[upload-image-preview]"
+  );
 
   uploadImageInput.addEventListener("change", () => {
     const file = uploadImageInput.files[0];
-    if(file) {
+    if (file) {
       uploadImagePreview.src = URL.createObjectURL(file);
     }
   });
@@ -209,13 +219,14 @@ if(uploadImage) {
 
 // Sort
 const sort = document.querySelector("[sort]");
-if(sort) {
+if (sort) {
   let url = new URL(window.location.href);
+  const sortClear = sort.querySelector("[sort-clear]");
   const sortSelect = sort.querySelector("[sort-select]");
   // Lắng nghe thay đổi sắp xếp
   sortSelect.addEventListener("change", () => {
     const [sortKey, sortValue] = sortSelect.value.split("-");
-    
+
     url.searchParams.set("sortKey", sortKey);
     url.searchParams.set("sortValue", sortValue);
 
@@ -226,39 +237,50 @@ if(sort) {
   const selectedSortKey = url.searchParams.get("sortKey");
   const selectedSortValue = url.searchParams.get("sortValue");
 
-  if(selectedSortKey && selectedSortValue) {
+  if (selectedSortKey && selectedSortValue) {
     const stringSort = `${selectedSortKey}-${selectedSortValue}`;
-    const optionSelected = sortSelect.querySelector(`option[value='${stringSort}']`);
+    const optionSelected = sortSelect.querySelector(
+      `option[value='${stringSort}']`
+    );
     optionSelected.selected = true;
   }
+
+  sortClear.addEventListener("click", () => {
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+
+    window.location.href = url.href;
+  });
 }
 // End Sort
 
 // Table permissions
-const buttonSubmitPermissions = document.querySelector("[button-submit-permissions]");
+const buttonSubmitPermissions = document.querySelector(
+  "[button-submit-permissions]"
+);
 
-if(buttonSubmitPermissions) {
+if (buttonSubmitPermissions) {
   buttonSubmitPermissions.addEventListener("click", () => {
     const roles = [];
     const tablePermissions = document.querySelector("[table-permissions]");
     const rows = tablePermissions.querySelectorAll("tbody tr[data-name]");
-    
+
     rows.forEach((row, index) => {
       const dataName = row.getAttribute("data-name");
       const inputs = row.querySelectorAll("input");
 
-      if(dataName == "id") {
-        inputs.forEach(input => {
+      if (dataName == "id") {
+        inputs.forEach((input) => {
           const id = input.value;
           roles.push({
             id: id,
-            permissions: []
+            permissions: [],
           });
         });
       } else {
         inputs.forEach((input, index) => {
           const inputChecked = input.checked;
-          if(inputChecked) {
+          if (inputChecked) {
             roles[index].permissions.push(dataName);
           }
         });
@@ -266,9 +288,13 @@ if(buttonSubmitPermissions) {
     });
 
     console.log(roles);
-    if(roles.length > 0) {
-      const formChangePermissions = document.querySelector("[form-change-permissions]");
-      const inputRoles = formChangePermissions.querySelector("input[name='roles']");
+    if (roles.length > 0) {
+      const formChangePermissions = document.querySelector(
+        "[form-change-permissions]"
+      );
+      const inputRoles = formChangePermissions.querySelector(
+        "input[name='roles']"
+      );
       inputRoles.value = JSON.stringify(roles);
       formChangePermissions.submit();
     }
@@ -278,14 +304,16 @@ if(buttonSubmitPermissions) {
 
 // Data default Table Permissions
 const dataRecords = document.querySelector("[data-records]");
-if(dataRecords) {
+if (dataRecords) {
   const records = JSON.parse(dataRecords.getAttribute("data-records"));
   const tablePermissions = document.querySelector("[table-permissions]");
 
   records.forEach((record, index) => {
     const permissions = record.permissions;
-    permissions.forEach(permission => {
-      const row = tablePermissions.querySelector(`tr[data-name="${permission}"]`);
+    permissions.forEach((permission) => {
+      const row = tablePermissions.querySelector(
+        `tr[data-name="${permission}"]`
+      );
       const input = row.querySelectorAll(`input`)[index];
       input.checked = true;
     });
