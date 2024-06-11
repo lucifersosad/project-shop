@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
@@ -8,8 +9,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("express-flash");
-
-require("dotenv").config();
+const path = require('path');
 
 const port = process.env.PORT;
 
@@ -31,6 +31,8 @@ app.use(cookieParser("abcxyz"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 // End Flash
+
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 //Routes
 route(app);
