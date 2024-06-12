@@ -20,7 +20,7 @@ router.post(
   controller.createPost
 );
 router.get("/edit/:id", controller.edit)
-router.post(
+router.patch(
   "/edit/:id",
   upload.single("thumbnail"),
   uploadCloud.uploadSingle,
