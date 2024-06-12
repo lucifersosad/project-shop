@@ -287,7 +287,6 @@ if (buttonSubmitPermissions) {
       }
     });
 
-    console.log(roles);
     if (roles.length > 0) {
       const formChangePermissions = document.querySelector(
         "[form-change-permissions]"

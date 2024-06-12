@@ -65,3 +65,34 @@ module.exports.editPatch = async (req, res) => {
   }
   res.redirect("back");
 };
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+  let find = {
+    deleted: false,
+  };
+
+  const records = await Role.find(find);
+
+  res.render("admin/pages/roles/permissions", {
+    pageTitle: "Phân quyền",
+    records: records,
+  });
+};
+
+// [PATCH] /admin/roles/permissions
+module.exports.permissionsPatch = async (req, res) => {
+  try {
+    const roles = JSON.parse(req.body.roles);
+    for (const role of roles) {
+      const id = role.id;
+      const permissions = role.permissions;
+      await Role.updateOne({ _id: id }, { permissions: permissions });
+    }
+    req.flash("success", "Cập nhật phân quyền thành công");
+  } catch (error) {
+    req.flash("error", "Cập nhật phân quyền thất bại");
+  }
+
+  res.redirect("back");
+};
