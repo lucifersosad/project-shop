@@ -34,7 +34,6 @@ module.exports.createPost = async (req, res) => {
 module.exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
 
     let find = {
       _id: id,
