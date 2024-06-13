@@ -102,6 +102,7 @@ block main
                   class="btn btn-danger btn-sm ml-1"
                   button-delete
                   data-id=item.id
+                  data-page="products"
                 ) Xóa
                 a(
                   href=`${prefixAdmin}/products/detail/${item.id}`
@@ -121,6 +122,5 @@ block main
     form-delete-item
     method="POST"
     action=""
-    data-page="products"
     data-path="/admin/products/delete"
   )

@@ -160,7 +160,7 @@ if (formChangeMulti) {
 // button-delete
 const listButtonDelete = document.querySelectorAll("[button-delete]");
 if (listButtonDelete.length > 0) {
-  const formDeleteItem = document.querySelector("[form-delete-item]");
+  const formDeleteItemList = document.querySelectorAll("[form-delete-item]");
 
   listButtonDelete.forEach((button) => {
     button.addEventListener("click", () => {
@@ -168,6 +168,11 @@ if (listButtonDelete.length > 0) {
 
       if (isConfirm) {
         const id = button.getAttribute("data-id");
+        const page = button.getAttribute("data-page");
+        const formDeleteItem = Array.from(formDeleteItemList).find((form) =>
+          form.getAttribute("data-path").includes(page)
+        );
+
         const path = formDeleteItem.getAttribute("data-path");
 
         const action = `${path}/${id}?_method=DELETE`;

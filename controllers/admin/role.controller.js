@@ -82,7 +82,7 @@ module.exports.editPatch = async (req, res) => {
 
     const updatedBy = {
       account_id: res.locals.user.id,
-      updatedBy: new Date(),
+      updatedAt: new Date(),
     };
 
     await Role.updateOne(
@@ -143,6 +143,28 @@ module.exports.deleteItem = async (req, res) => {
         deletedAt: new Date(),
       },
     }
+  );
+
+  req.flash("success", "Xóa nhóm quyền thành công");
+
+  res.redirect("back");
+};
+
+// [DELETE] /admin/roles/:id
+module.exports.deleteItem = async (req, res) => {
+  const id = req.params.id;
+
+  const deletedBy = {
+    account_id: res.locals.user.id,
+    deletedAt: new Date(),
+  };
+
+  await Role.updateOne(
+    { _id: id },
+    {
+      deleted: true,
+      deletedBy: deletedBy,
+    },
   );
 
   req.flash("success", "Xóa nhóm quyền thành công");
