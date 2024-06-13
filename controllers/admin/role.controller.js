@@ -1,5 +1,6 @@
 const Role = require("../../models/role.model");
 const systemConfig = require("../../config/system");
+const Account = require("../../models/account.model");
 
 // [GET] /admin/roles
 module.exports.index = async (req, res) => {
@@ -8,6 +9,26 @@ module.exports.index = async (req, res) => {
   };
 
   const records = await Role.find(find);
+
+  for (const record of records) {
+    const userCreate = await Account.findOne({
+      _id: record.createdBy.account_id,
+    });
+    if (userCreate) {
+      record.userCreate = userCreate.fullName;
+    }
+
+    const updatedBy = record.updatedBy.slice(-1)[0];
+    
+    if (updatedBy) {
+      const userUpdate = await Account.findOne({
+        _id: updatedBy.account_id,
+      });
+      if (userUpdate) {
+        record.userUpdate = userUpdate.fullName;
+      }
+    }
+  }
 
   res.render("admin/pages/roles/index", {
     pageTitle: "Nhóm quyền",
@@ -24,6 +45,9 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/roles/create
 module.exports.createPost = async (req, res) => {
+  req.body.createdBy = {
+    account_id: res.locals.user.id,
+  };
   const record = new Role(req.body);
   await record.save();
 
@@ -56,7 +80,18 @@ module.exports.editPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
-    await Role.updateOne({ _id: id }, req.body);
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updatedBy: new Date(),
+    };
+
+    await Role.updateOne(
+      { _id: id },
+      {
+        ...req.body,
+        $push: { updatedBy: updatedBy },
+      }
+    );
 
     req.flash("success", "Cập nhật nhóm quyền thành công");
   } catch (error) {
@@ -92,6 +127,25 @@ module.exports.permissionsPatch = async (req, res) => {
   } catch (error) {
     req.flash("error", "Cập nhật phân quyền thất bại");
   }
+
+  res.redirect("back");
+};
+
+// [DELETE] /admin/roles/:id
+module.exports.deleteItem = async (req, res) => {
+  const id = req.params.id;
+  await Role.updateOne(
+    { _id: id },
+    {
+      deleted: true,
+      deletedBy: {
+        account_id: res.locals.user.id,
+        deletedAt: new Date(),
+      },
+    }
+  );
+
+  req.flash("success", "Xóa nhóm quyền thành công");
 
   res.redirect("back");
 };
