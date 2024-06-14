@@ -19,7 +19,7 @@ module.exports.index = async (req, res) => {
     }
 
     const updatedBy = record.updatedBy.slice(-1)[0];
-    
+
     if (updatedBy) {
       const userUpdate = await Account.findOne({
         _id: updatedBy.account_id,
@@ -45,13 +45,19 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/roles/create
 module.exports.createPost = async (req, res) => {
-  req.body.createdBy = {
-    account_id: res.locals.user.id,
-  };
-  const record = new Role(req.body);
-  await record.save();
+  const permissions = res.locals.role.permissions;
 
-  res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  if (permissions.includes("roles__create")) {
+    req.body.createdBy = {
+      account_id: res.locals.user.id,
+    };
+    const record = new Role(req.body);
+    await record.save();
+
+    res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  } else {
+    res.send("403");
+  }
 };
 
 // [GET] /admin/roles/edit/:id
@@ -77,27 +83,32 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/roles/edit/:id
 module.exports.editPatch = async (req, res) => {
-  try {
-    const id = req.params.id;
+  const permissions = res.locals.role.permissions;
+  if (permissions.includes("roles__edit")) {
+    try {
+      const id = req.params.id;
 
-    const updatedBy = {
-      account_id: res.locals.user.id,
-      updatedAt: new Date(),
-    };
+      const updatedBy = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date(),
+      };
 
-    await Role.updateOne(
-      { _id: id },
-      {
-        ...req.body,
-        $push: { updatedBy: updatedBy },
-      }
-    );
+      await Role.updateOne(
+        { _id: id },
+        {
+          ...req.body,
+          $push: { updatedBy: updatedBy },
+        }
+      );
 
-    req.flash("success", "Cập nhật nhóm quyền thành công");
-  } catch (error) {
-    req.flash("error", "Cập nhật nhóm quyền thất bại");
+      req.flash("success", "Cập nhật nhóm quyền thành công");
+    } catch (error) {
+      req.flash("error", "Cập nhật nhóm quyền thất bại");
+    }
+    res.redirect("back");
+  } else {
+    res.send("403");
   }
-  res.redirect("back");
 };
 
 // [GET] /admin/roles/permissions
@@ -133,41 +144,24 @@ module.exports.permissionsPatch = async (req, res) => {
 
 // [DELETE] /admin/roles/:id
 module.exports.deleteItem = async (req, res) => {
-  const id = req.params.id;
-  await Role.updateOne(
-    { _id: id },
-    {
-      deleted: true,
-      deletedBy: {
-        account_id: res.locals.user.id,
-        deletedAt: new Date(),
-      },
-    }
-  );
+  const permissions = res.locals.role.permissions;
+  if (permissions.includes("roles__delete")) {
+    const id = req.params.id;
+    await Role.updateOne(
+      { _id: id },
+      {
+        deleted: true,
+        deletedBy: {
+          account_id: res.locals.user.id,
+          deletedAt: new Date(),
+        },
+      }
+    );
 
-  req.flash("success", "Xóa nhóm quyền thành công");
+    req.flash("success", "Xóa nhóm quyền thành công");
 
-  res.redirect("back");
-};
-
-// [DELETE] /admin/roles/:id
-module.exports.deleteItem = async (req, res) => {
-  const id = req.params.id;
-
-  const deletedBy = {
-    account_id: res.locals.user.id,
-    deletedAt: new Date(),
-  };
-
-  await Role.updateOne(
-    { _id: id },
-    {
-      deleted: true,
-      deletedBy: deletedBy,
-    },
-  );
-
-  req.flash("success", "Xóa nhóm quyền thành công");
-
-  res.redirect("back");
+    res.redirect("back");
+  } else {
+    res.send("403");
+  }
 };
