@@ -7,11 +7,19 @@ module.exports.index = async (req, res) => {
     deleted: false,
     status: "active",
   });
-  
-  const newFeaturedProducts = productHelper.priceNewProducts(featuredProducts)
+
+  const newProductsFeatured = productHelper.priceNewProducts(featuredProducts)
+
+  const newProducts = await Product.find({
+    deleted: false,
+    status: "active",
+  }).sort({position: "desc"}).limit(6)
+
+  const newProductsNew = productHelper.priceNewProducts(newProducts)
 
   res.render("client/pages/home/index", {
     pageTitle: "Trang chủ",
-    featuredProducts: newFeaturedProducts,
+    featuredProducts: newProductsFeatured,
+    newProducts: newProductsNew,
   });
 };
