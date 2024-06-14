@@ -17,11 +17,11 @@ block main
               span Danh mục: 
               a(href=`/products/${product.category.slug}`) #{product.category.title}
 
-          if (product.priceNew)
+          if (product.priceNew != product.price)
             div(class="inner-price-new") #{product.priceNew}$
-
-          if (product.price)
             div(class="inner-price-old") #{product.price}$
+          else 
+            div(class="inner-price-new") #{product.price}$
 
           if (product.discountPercentage)
             div(class="inner-percent") Giảm tới <span>#{product.discountPercentage}%</span>
