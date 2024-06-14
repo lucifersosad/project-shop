@@ -10,6 +10,9 @@ mixin products-grid(products)
                     .inner-content
                         h3.inner-title
                             a(href=`/products/detail/${item.slug}`) #{item.title}
-                        .inner-price-new #{item.priceNew}$
-                        .inner-price-old #{item.price}$
+                        if(item.priceNew != item.price)
+                            .inner-price-new #{item.priceNew}$
+                            .inner-price-old #{item.price}$
+                        else 
+                            .inner-price-new #{item.price}$
                         .inner-discount #{item.discountPercentage} %
