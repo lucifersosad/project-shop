@@ -2,6 +2,38 @@ const productHelper = require("../../helpers/products");
 const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
 
+// [GET] /cart
+module.exports.index = async (req, res) => {
+  const cart = res.locals.miniCart;
+
+  let totalPrice = 0;
+
+  if (cart.products.length > 0) {
+    for (const item of cart.products) {
+      const productId = item.product_id;
+
+      const infoProduct = await Product.findOne({
+        _id: productId,
+      });
+
+      infoProduct.priceNew = productHelper.getNewPrice(infoProduct);
+
+      item.infoProduct = infoProduct;
+
+      item.totalPrice = infoProduct.priceNew * item.quantity;
+
+      totalPrice += item.totalPrice;
+    }
+  }
+
+  cart.totalPrice = totalPrice;
+
+  res.render("client/pages/cart/index", {
+    pageTitle: "Giỏ hàng",
+    cartDetail: cart,
+  });
+};
+
 // POST /cart/add/:productId
 module.exports.addPost = async (req, res) => {
   const cartId = req.cookies.cartId;
