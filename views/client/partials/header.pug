@@ -32,5 +32,6 @@ header.header
             li(class="sub-menu") 
               a(href="/products") Sản phẩm
               +sub-menu(layoutProductCategories)
-
+            li 
+              a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.totalQuantity : 0})
 
