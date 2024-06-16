@@ -12,24 +12,23 @@ block main
 
     .row
       .col-12
-        //- .chat(my-id=user.id)
-        .chat(my-id)
+        .chat(my-id=user.id)
           //- .inner-head
           //-   .inner-avatar EY
           //-   .inner-name Em Yêu
           .inner-body
             if (chats)
-                each chat in chats
-                    div(class=(user.id == chat.user_id ? "inner-outgoing" : "inner-incoming"))
-                        if(user.id != chat.user_id)
-                        .inner-name #{chat.userFullName}
-                        if(chat.content)
-                        .inner-content
-                            | #{chat.content}
-                        if(chat.images)
-                        .inner-images
-                            each image in chat.images
-                                img(src=image)
+              each chat in chats
+                div(class=(user.id == chat.infoUser.id ? "inner-outgoing" : "inner-incoming"))
+                  if(user.id != chat.infoUser.id)
+                    .inner-name #{chat.infoUser.fullName}
+                  if(chat.content)
+                    .inner-content
+                      | #{chat.content}
+                  if(chat.images)
+                    .inner-images
+                        each image in chat.images
+                          img(src=image)
 
             div(class="inner-list-typing")
           .inner-preview-images
@@ -53,5 +52,6 @@ block main
               button
                 i.fa-solid.fa-paper-plane
   
-  div(class="tooltip" role="tooltip")
     emoji-picker(class="light")
+  //- div(class="tooltip" role="tooltip")
+  //-   emoji-picker(class="light")

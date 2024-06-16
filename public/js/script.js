@@ -28,36 +28,17 @@ if (goBackButtons.length > 0) {
 }
 //End Button Go Back
 
-// Update Cart
-const tableCart = document.querySelector("[table-cart]");
-if (tableCart) {
-  const listInputQuantity = tableCart.querySelectorAll(
-    "input[name='quantity']"
-  );
-  listInputQuantity.forEach((input) => {
-    input.addEventListener("change", () => {
-      const quantity = input.value;
-      const productId = input.getAttribute("item-id");
-      const maxQuantity = input.getAttribute("max");
-      console.log(maxQuantity);
-
-      if (quantity > 0 && quantity <= maxQuantity) {
-        window.location.href = `/cart/update/${productId}/${quantity}`;
-      }
-    });
-  });
-}
-// End Update Cart
-
 // // CLIENT_SEND_MESSAGE
 // const formSendData = document.querySelector(".chat .inner-form");
-// if(formSendData) {
-//   // Upload Images
-//   const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
-//     multiple: true,
-//     maxFileCount: 6
-//   });
-//   // End Upload Images
+// if (formSendData) {
+//     // Upload Images
+//     const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
+//       multiple: true,
+//       maxFileCount: 6
+//     });
+//     // End Upload Images
+
+//   console.log(formSendData)
 
 //   formSendData.addEventListener("submit", (event) => {
 //     event.preventDefault();
@@ -66,16 +47,16 @@ if (tableCart) {
 
 //     console.log(upload.cachedFileArray);
 
-//     if(content || images) {
+//     if (content || images) {
 //       socket.emit("CLIENT_SEND_MESSAGE", {
 //         content: content,
-//         images: images
+//         images: images,
 //       });
 //       formSendData.content.value = "";
 //       socket.emit("CLIENT_SEND_TYPING", "hidden");
 //       upload.resetPreviewPanel();
 //     }
-//   })
+//   });
 // }
 // // End CLIENT_SEND_MESSAGE
 

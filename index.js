@@ -24,9 +24,7 @@ database.connect();
 const server = http.createServer(app);
 const io = new Server(server);
 
-io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
-});
+global._io = io;
 
 //App Locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
