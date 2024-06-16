@@ -1,6 +1,7 @@
 const md5 = require("md5");
 const generateHelper = require("../../helpers/generate");
 const User = require("../../models/users.model");
+const Cart = require("../../models/cart.model");
 const ForgotPassword = require("../../models/forgot-password.model");
 const sendMail = require("../../helpers/sendMail");
 // [GET] /user/register
@@ -58,6 +59,8 @@ module.exports.loginPost = async (req, res) => {
   }
 
   res.cookie("tokenUser", user.tokenUser);
+
+  await Cart.updateOne({ _id: req.cookies.cartId }, { user_id: user.id });
   res.redirect("/");
 };
 
@@ -167,4 +170,14 @@ module.exports.resetPasswordPost = async (req, res) => {
   );
 
   res.redirect("/");
+};
+
+// [GET] /user/info
+module.exports.info = async (req, res) => {
+  const user = res.locals.user;
+  console.log(user);
+  res.render("client/pages/user/info", {
+    pageTitle: "Thông tin tài khoản",
+    user: user,
+  });
 };

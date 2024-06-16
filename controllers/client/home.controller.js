@@ -1,4 +1,4 @@
-const productHelper = require("../../helpers/products")
+const productHelper = require("../../helpers/products");
 const Product = require("../../models/product.model");
 // [GET] /
 module.exports.index = async (req, res) => {
@@ -8,14 +8,16 @@ module.exports.index = async (req, res) => {
     status: "active",
   });
 
-  const newProductsFeatured = productHelper.priceNewProducts(featuredProducts)
+  const newProductsFeatured = productHelper.priceNewProducts(featuredProducts);
 
   const newProducts = await Product.find({
     deleted: false,
     status: "active",
-  }).sort({position: "desc"}).limit(6)
+  })
+    .sort({ position: "desc" })
+    .limit(6);
 
-  const newProductsNew = productHelper.priceNewProducts(newProducts)
+  const newProductsNew = productHelper.priceNewProducts(newProducts);
 
   res.render("client/pages/home/index", {
     pageTitle: "Trang chủ",
