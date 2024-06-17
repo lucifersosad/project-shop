@@ -21,7 +21,7 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const body = document.querySelector(".chat .inner-body");
   const myId = document.querySelector("[my-id]").getAttribute("my-id");
   const boxTyping = document.querySelector(".inner-list-typing")
-  
+
   const div = document.createElement("div");
 
   let htmlFullName = "";
@@ -95,6 +95,17 @@ if (emojiPicker) {
     );
 
     inputChat.value = inputChat.value + icon;
+    const end = inputChat.value.length;
+    inputChat.setSelectionRange(end, end);
+    inputChat.focus();
+
+    socket.emit("CLIENT_SEND_TYPING", "show");
+
+    clearTimeout(timeOut);
+
+    timeOut = setTimeout(() => {
+      socket.emit("CLIENT_SEND_TYPING", "hidden");
+    }, 3000);
   });
 }
 // End emoji-picker
